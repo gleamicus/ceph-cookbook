@@ -111,8 +111,10 @@ else
 
       dmcrypt = osd_device['encrypted'] == true ? '--dmcrypt' : ''
 
+      fstype = osd_device['fstype'] ? "--fstype #{osd_device['fstype']}" : ''
+
       execute "ceph-disk-prepare on #{osd_device['device']}" do
-        command "ceph-disk-prepare #{dmcrypt} #{osd_device['device']} #{osd_device['journal']}"
+        command "ceph-disk-prepare #{dmcrypt} #{fstype} #{osd_device['device']} #{osd_device['journal']}"
         action :run
         notifies :create, "ruby_block[save osd_device status #{index}]", :immediately
       end
